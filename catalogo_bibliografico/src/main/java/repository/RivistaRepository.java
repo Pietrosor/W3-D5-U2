@@ -13,30 +13,29 @@ public class RivistaRepository {
     private final EntityManager em;
 
     public RivistaRepository() {
-        // Anche qui, "CatalogoBibliografico" è il nome della persistence unit
+
         emf = Persistence.createEntityManagerFactory("CatalogoBibliografico");
         em = emf.createEntityManager();
     }
 
-    // Metodo per salvare una Rivista nel database
     public void salva(Rivista rivista) {
         em.getTransaction().begin();
         em.persist(rivista);
         em.getTransaction().commit();
     }
 
-    // Metodo per trovare una Rivista tramite il suo ISBN
+
     public Rivista trovaPerISBN(String isbn) {
         return em.find(Rivista.class, isbn);
     }
 
-    // Metodo per recuperare tutte le riviste presenti
+
     public List<Rivista> trovaTutte() {
         TypedQuery<Rivista> query = em.createQuery("SELECT r FROM Rivista r", Rivista.class);
         return query.getResultList();
     }
 
-    // Metodo per aggiornare una Rivista
+
     public Rivista aggiorna(Rivista rivista) {
         em.getTransaction().begin();
         Rivista updatedRivista = em.merge(rivista);
@@ -44,7 +43,7 @@ public class RivistaRepository {
         return updatedRivista;
     }
 
-    // Metodo per eliminare una Rivista
+
     public void elimina(Rivista rivista) {
         em.getTransaction().begin();
         if (!em.contains(rivista)) {
@@ -54,7 +53,7 @@ public class RivistaRepository {
         em.getTransaction().commit();
     }
 
-    // Metodo per chiudere le risorse
+
     public void chiudi() {
         if (em.isOpen()) {
             em.close();
